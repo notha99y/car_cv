@@ -1,11 +1,13 @@
-import torch
-from torchvision import transforms
-from dataset import StanfordCarDataset
 from pathlib import Path
 
+import torch
+from dataset import StanfordCarDataset
+from torchvision import transforms
+
+
 def save_ckpt(model, optimizer, epoch, losses, accuracies, path):
-    '''Save model checkpoints
-    '''
+    """Save model checkpoints
+    """
     torch.save(
         {
             "epoch": epoch,
@@ -22,8 +24,8 @@ def save_ckpt(model, optimizer, epoch, losses, accuracies, path):
 
 
 def load_ckpt(ckpt_path, model, optimizer):
-    '''Load model check points
-    '''
+    """Load model check points
+    """
 
     ckpt = torch.load(ckpt_path)
     model.load_state_dict(ckpt["model_state_dict"])
@@ -36,7 +38,7 @@ def load_ckpt(ckpt_path, model, optimizer):
 
 
 def get_data_transforms():
-    '''Get data tranformation'''
+    """Get data tranformation"""
 
     data_transforms = {
         "train": transforms.Compose(
@@ -66,19 +68,16 @@ def get_data_transforms():
     return data_transforms
 
 
-
 def get_data_sets(train_config, data_transforms):
-    '''Get datasets'''
+    """Get datasets"""
     contexts = ["train", "test"]
 
-    if train_config['dataset']['name'] == 'StanfordCarDataset':
+    if train_config["dataset"]["name"] == "StanfordCarDataset":
         data_path = Path(".") / "stanford_car"
         names_csv = data_path / "names.csv"
 
         anno_csvs = {x: data_path / "anno_{}.csv".format(x) for x in contexts}
         root_dirs = {x: data_path / "car_data" / x for x in contexts}
-
-        
 
         datasets = {
             x: StanfordCarDataset(
@@ -99,9 +98,7 @@ def get_data_sets(train_config, data_transforms):
 
         class_names = datasets["train"].car_names
 
-
     else:
-        print('No other datasets')
+        print("No other datasets")
 
-    
     return datasets, dataloaders, class_names

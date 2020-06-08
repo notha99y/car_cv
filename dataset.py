@@ -1,11 +1,13 @@
 from pathlib import Path
+
 import numpy as np
 import pandas as pd
-from skimage import io, transform
+from skimage import io
 from tqdm import tqdm
+
 import torch
-from torch.utils.data import DataLoader, Dataset
-from torchvision import datasets, models, transforms
+from torch.utils.data import Dataset
+from torchvision import transforms
 
 
 class StanfordCarDataset(Dataset):
@@ -34,6 +36,7 @@ class StanfordCarDataset(Dataset):
         self.root_dir = root_dir
         self.crop = crop
         self.transform = transform
+
     def __len__(self):
         return len(self.df)
 
@@ -47,7 +50,7 @@ class StanfordCarDataset(Dataset):
         img_path = Path(self.root_dir) / car_name / image_name
         img = io.imread(img_path)
         if len(img.shape) != 3:
-            img = np.stack((img,)*3, axis = -1)
+            img = np.stack((img,) * 3, axis=-1)
         if self.crop:
             img = img[l:r, t:b]
 
@@ -66,7 +69,7 @@ if __name__ == "__main__":
 
     data_transforms = {
         "train": transforms.Compose(
-            [   
+            [
                 transforms.RandomResizedCrop(224),
                 transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
@@ -89,11 +92,7 @@ if __name__ == "__main__":
 
     datasets = {
         x: StanfordCarDataset(
-            names_csv,
-            anno_csvs[x],
-            root_dirs[x],
-            crop=False,
-            transform=None,
+            names_csv, anno_csvs[x], root_dirs[x], crop=False, transform=None,
         )
         for x in contexts
     }

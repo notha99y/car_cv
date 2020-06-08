@@ -1,7 +1,6 @@
 from collections import Counter
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import pandas as pd
 from PIL import Image, ImageDraw
 from tqdm import tqdm

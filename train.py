@@ -25,7 +25,7 @@ def train_model(
     """
 
     num_epochs = train_config["training"]["epoch"]
-    model_name = train_config['models']['name']
+    model_name = train_config["models"]["name"]
     dataset_name = dataloaders["train"].dataset.__class__.__name__
 
     tic = time.time()
@@ -121,6 +121,10 @@ def train_model(
                 },
                 step=epoch,
             )
+            # mlflow.log_metric(key='train_acc', value=accuracies['train'], step=epoch)
+            # mlflow.log_metric(key='train_loss', value=accuracies['train'], step=epoch)
+            # mlflow.log_metric(key='test_acc', value=accuracies['test'], step=epoch)
+            # mlflow.log_metric(key='test_loss', value=accuracies['test'], step=epoch)
 
     time_elapsed = time.time() - tic
     print(
@@ -151,7 +155,9 @@ if __name__ == "__main__":
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     model = models.get_resnets(
-        num_out_classes=len(class_names), pretrained=True, train_config= train_config
+        num_out_classes=len(class_names),
+        pretrained=True,
+        train_config=train_config,
     )
     # Training
     criterion = nn.CrossEntropyLoss()
