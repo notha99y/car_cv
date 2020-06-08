@@ -1,0 +1,21 @@
+name: car_cv
+channels:
+    - default
+    - pytorch
+    - conda-forge
+    - anaconda
+dependencies:
+    - python=3.8
+    - pip
+    - pytorch
+    - torchvision
+    - cudatoolkit=10.1
+    - flask
+    - gunicorn
+    - scipy
+    - mlflow
+    - toml
+    - scikit-image
+    - tqdm
+    - pip:
+        - jupyter
